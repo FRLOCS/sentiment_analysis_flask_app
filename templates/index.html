@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <div style="text-align: center;">
+       <title>Sentiment Analysis</title>
+    </div>
 </head>
 <body>
-    <h1>Sentiment Analysis</h1>
+    <div style="text-align: center;">
+        <h1>Sentiment Analysis</h1>
+    </div>
 
     <form method="POST">
         <label for="text">Enter Text:</label><br>
         <textarea id="text" name="text" rows="4" cols="50"></textarea><br><br>
         <input type="submit" value="Analyze">
+        <input type="submit" value="Summarize">
     </form>
+    
+
+    
+
 
     {% if result %}
         <h2>Result:</h2>
@@ -18,8 +28,10 @@
          {% if face %}
             <p>Face: {{ face }}</p>
         {% endif %}
+        <p> Summary: {{ summarizeResult }}</p>
         <p>Details: {{ result }}</p>
     {% endif %}
+
 
 </body>
 </html>

@@ -3,10 +3,12 @@ from transformers import pipeline
 
 app = Flask(__name__)
 classifier = pipeline('sentiment-analysis')
+summarize = pipeline("summarization", model="facebook/bart-large-cnn")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = None
+    summarizeResult = None
     sentiment = None
     face = None
 
@@ -15,12 +17,13 @@ def index():
         if text:
             try:
                 result = classifier(text)[0]  # Get the first (and usually only) result.
+                summarizeResult = summarize(text)
                 sentiment = result['label']
 
                 if sentiment == "POSITIVE":
-                    face = ":)"
+                    face = "😁"
                 elif sentiment == "NEGATIVE":
-                    face = ":("
+                    face = "😢"
                 else:  # Handle neutral or unexpected labels
                     face = "😐" # Neutral face
 
@@ -30,7 +33,7 @@ def index():
                 sentiment = "Error"
 
 
-    return render_template("index.html", result=result, face=face, sentiment=sentiment)
+    return render_template("index.html", result=result, face=face, sentiment=sentiment, summarizeResult=summarizeResult)
 
 if __name__ == "__main__":
     app.run(debug=True)  # debug=True is helpful during development
